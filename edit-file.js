@@ -1,24 +1,24 @@
-'use strict';
+'use strict' ;
 
-
-const fs = require('fs');
-
-const util = require('util');
-
-
-const readerWithCallback = (file, callback) => {
-  fs.readFile(file, (err, data) => {
-    if (err) { callback(err); }
-    else { callback(undefined, data.toString().trim()); }
-  });
+const fs = require('fs') ;
+const util = require('util') ;
+const changeData = util.promisify(fs.writeFile) ;
+const writer = (jsonData , data) => {
+  return changeData(jsonData , data);
 };
 
-
-const readFilePromise = util.promisify(fs.readFile);
-const readerWithPromise = (file) => {
-  return readFilePromise(file)
-    .then(contents => contents.toString().trim())
-    .catch(error => error);
+const readFile = util.promisify(fs.readFile) ;
+const reader = (jsonData) => {
+  return readFile(jsonData)
+    .then( (data) => {
+      return data ;
+    }).catch (
+      error => 
+        error,
+    );
 };
 
-module.exports = { readerWithCallback, readerWithPromise };
+module.exports = {
+  read : reader,
+  writer,
+};
