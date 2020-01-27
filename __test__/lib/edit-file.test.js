@@ -14,6 +14,7 @@ describe('file modules' , () => {
       fs.readFile(jsonData, function (err, data) {
         if (err) throw err;
         if(data.indexOf('search string') >= 0){
+          expect(typeof data).toBe('string');
           return editor.reader(jsonData);
         }
       });
@@ -32,7 +33,7 @@ describe('file modules' , () => {
     });
 
 
-    it('format Data stay th same after the change', () => {
+    it('the format Data stay the same after the change', () => {
       let jsonData = `${__dirname}/../../data/person.json`;
       return editor.read(jsonData)
         .then( (data) => { 
